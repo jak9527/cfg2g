@@ -82,7 +82,7 @@ async function getAllData(auth) {
 }
 
 const app = express();
-const port = 8007;
+const port = process.env.PORT || 8007;
 
 app.get("/data", (req, res) => {
     authorize()
