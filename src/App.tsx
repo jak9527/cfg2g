@@ -1,13 +1,12 @@
 import "./App.css";
 import { useMemo, useState } from "react";
 import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
-import { Box, Button, Loader } from "@mantine/core";
+import { Box, Button } from "@mantine/core";
 
 interface Company {
     name: string;
     notes?: string;
     severity: string;
-    // severity: "No Significant Investment" | "Minimal Involvement" | "Moderate" | "Severe";
 }
 
 const Table = ({ data }: { data: Company[] }) => {
@@ -52,13 +51,12 @@ export default function App() {
                 <>
                     <Button
                         onClick={async () => {
-                            const data = await fetch("/data").then(async (v) => v.json());
-                            setCompanies(data.map((c: any[]) => ({ name: c[0], notes: c[1], severity: c[2] } as Company)));
+                            const data = await fetch(`${import.meta.env.VITE_BASE_URL}/data`).then(async (v) => v.json());
+                            setCompanies(data.map((c: string[]) => ({ name: c[0], notes: c[1], severity: c[2] } as Company)));
                         }}
                     >
                         Fetch
                     </Button>
-                    <Loader />
                 </>
             ) : (
                 <Table data={companies} />
