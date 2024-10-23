@@ -29,11 +29,12 @@ const Table = ({ data }: { data: Company[] }) => {
         [],
     );
 
-    console.log("DATA HERE HERE HER", data);
-
     const table = useMantineReactTable({
         columns,
         data,
+        initialState: {
+            isFullScreen: true,
+        },
     });
 
     return (
@@ -52,7 +53,6 @@ export default function App() {
                     <Button
                         onClick={async () => {
                             const data = await fetch("/data").then(async (v) => v.json());
-                            console.log("DATA", data);
                             setCompanies(data.map((c: any[]) => ({ name: c[0], notes: c[1], severity: c[2] } as Company)));
                         }}
                     >
