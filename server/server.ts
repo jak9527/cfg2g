@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const fs = require("fs").promises;
 const path = require("path");
 const { authenticate } = require("@google-cloud/local-auth");
@@ -83,8 +84,14 @@ async function getAllData(auth) {
 
 const app = express();
 const port = process.env.PORT || 8007;
+const corsOptions = {
+    origin: "https://sjprit.com",
+    optionsSuccessStatus: 200,
+};
 
-app.get("/data", (req, res) => {
+app.use(cors);
+
+app.get("/data", cors(corsOptions), (req, res) => {
     authorize()
         .then(getAllData)
         .then((v) => res.send(v))
