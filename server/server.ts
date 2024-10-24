@@ -1,9 +1,9 @@
-const express = require("express");
-const cors = require("cors");
-const fs = require("fs").promises;
-const path = require("path");
-const { authenticate } = require("@google-cloud/local-auth");
-const { google } = require("googleapis");
+import express from "express";
+import cors from "cors";
+import fs from "fs";
+import path from "path";
+import { authenticate } from "@google-cloud/local-auth";
+import { google } from "googleapis";
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
@@ -20,9 +20,8 @@ const CREDENTIALS_PATH = path.join(process.cwd(), "credentials.json");
  */
 async function loadSavedCredentialsIfExist() {
     try {
-        const content = await fs.readFile(TOKEN_PATH);
-        const credentials = JSON.parse(content);
-        return google.auth.fromJSON(credentials);
+        const content = fs.readFileSync(TOKEN_PATH).toString();
+        return google.auth.fromJSON(JSON.parse(content));
     } catch (err) {
         return null;
     }
@@ -35,16 +34,15 @@ async function loadSavedCredentialsIfExist() {
  * @return {Promise<void>}
  */
 async function saveCredentials(client) {
-    const content = await fs.readFile(CREDENTIALS_PATH);
-    const keys = JSON.parse(content);
-    const key = keys.installed || keys.web;
+    const content = JSON.parse(fs.readFileSync(CREDENTIALS_PATH).toString());
+    const key = content.installed || content.web;
     const payload = JSON.stringify({
         type: "authorized_user",
         client_id: key.client_id,
         client_secret: key.client_secret,
         refresh_token: client.credentials.refresh_token,
     });
-    await fs.writeFile(TOKEN_PATH, payload);
+    fs.writeFileSync(TOKEN_PATH, payload);
 }
 
 /**
