@@ -25,3 +25,4 @@ dist-ssr
 
 server/credentials.json
 server/token.json
+server/.env

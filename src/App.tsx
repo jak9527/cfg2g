@@ -1,13 +1,17 @@
 import "./App.css";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
-import { Box, Button } from "@mantine/core";
+import { Box, Loader } from "@mantine/core";
 
-interface Company {
+type Company = {
     name: string;
     notes?: string;
     severity: string;
-}
+};
+
+type Cell = {
+    values: { effectiveFormat: unknown; effectiveValue: unknown; formattedValue: string; userEnteredValue: unknown }[];
+};
 
 const Table = ({ data }: { data: Company[] }) => {
     const columns = useMemo<MRT_ColumnDef<Company>[]>(
@@ -44,19 +48,30 @@ const Table = ({ data }: { data: Company[] }) => {
 };
 
 export default function App() {
-    const [companies, setCompanies] = useState<Company[] | undefined>();
+    const [companies, setCompanies] = useState<Company[] | undefined>(undefined);
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_BASE_URL}/data`)
+            .then(async (res) => {
+                const { data } = await res.json();
+                setCompanies(
+                    data?.data?.sheets[0]?.data[0]?.rowData?.map(
+                        (raw: Cell) =>
+                            ({
+                                name: raw.values[0].formattedValue,
+                                notes: raw.values[1].formattedValue,
+                                severity: raw.values[2].formattedValue,
+                            } as Company),
+                    ),
+                );
+            })
+            .catch((e) => console.warn("Error retrieving data:", e));
+    }, []);
+
     return (
-        <Box style={{ width: "100vw", height: "100vh", display: "flex", justifyContent: "center" }}>
+        <Box style={{ width: "100%", height: "100%", display: "flex", justifyContent: "center" }}>
             {companies === undefined ? (
                 <>
-                    <Button
-                        onClick={async () => {
-                            const data = await fetch(`${import.meta.env.VITE_BASE_URL}/data`).then(async (v) => v.json());
-                            setCompanies(data.map((c: string[]) => ({ name: c[0], notes: c[1], severity: c[2] } as Company)));
-                        }}
-                    >
-                        Fetch
-                    </Button>
+                    <Loader h="100%" w="100%" />
                 </>
             ) : (
                 <Table data={companies} />

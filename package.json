@@ -13,6 +13,7 @@
     "@mantine/core": "^7.13.3",
     "@mantine/dates": "^7.13.3",
     "@mantine/hooks": "^7.13.3",
+    "@react-oauth/google": "^0.12.1",
     "@tabler/icons-react": "^3.19.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
