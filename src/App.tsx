@@ -1,7 +1,7 @@
 import "./App.css";
 import { useEffect, useMemo, useState } from "react";
 import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
-import { Box, Loader } from "@mantine/core";
+import { Box, Loader, Text } from "@mantine/core";
 
 type Company = {
     name: string;
@@ -13,7 +13,16 @@ type Cell = {
     values: { effectiveFormat: unknown; effectiveValue: unknown; formattedValue: string; userEnteredValue: unknown }[];
 };
 
-const Table = ({ data }: { data: Company[] }) => {
+function Table({ data }: { data: Company[] }) {
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+
+    useEffect(() => {
+        console.log("PAGE SIZE", pagination.pageSize);
+    }, [pagination.pageSize]);
+
     const columns = useMemo<MRT_ColumnDef<Company>[]>(
         () => [
             {
@@ -38,6 +47,16 @@ const Table = ({ data }: { data: Company[] }) => {
         initialState: {
             isFullScreen: true,
         },
+        mantinePaginationProps: {
+            rowsPerPageOptions: ["10", "20", "50", "All"],
+        },
+        onPaginationChange: setPagination,
+        state: {
+            pagination: {
+                pageIndex: 0,
+                pageSize: isNaN(pagination.pageSize) ? 999 : pagination.pageSize,
+            },
+        },
     });
 
     return (
@@ -45,7 +64,7 @@ const Table = ({ data }: { data: Company[] }) => {
             <MantineReactTable table={table} />
         </>
     );
-};
+}
 
 export default function App() {
     const [companies, setCompanies] = useState<Company[] | undefined>(undefined);
@@ -68,10 +87,20 @@ export default function App() {
     }, []);
 
     return (
-        <Box style={{ width: "100%", height: "100%", display: "flex", justifyContent: "center" }}>
+        <Box
+            style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+                alignItems: "center",
+            }}
+        >
             {companies === undefined ? (
                 <>
-                    <Loader h="100%" w="100%" />
+                    <Text>Loading...</Text>
+                    <Loader />
                 </>
             ) : (
                 <Table data={companies} />

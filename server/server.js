@@ -14,6 +14,10 @@ const corsOptions = {
 app.use(cors());
 app.use(express.json());
 
+app.get("/", cors(corsOptions), (req, res) => {
+    res.send({ status: "ok" });
+});
+
 app.get("/data", cors(corsOptions), async (req, res) => {
     const spreadsheetId = process.env.VITE_SHEET_ID;
     const range = "Career Fair Fall 2024!A2:C";
