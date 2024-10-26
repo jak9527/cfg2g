@@ -8,7 +8,8 @@
         "start": "vite",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "pre-commit": "pnpm exec prettier . --write --log-level warn && pnpm exec eslint"
     },
     "dependencies": {
         "@mantine/core": "^7.13.3",
@@ -34,6 +35,7 @@
         "postcss": "^8.4.47",
         "postcss-preset-mantine": "^1.17.0",
         "postcss-simple-vars": "^7.0.1",
+        "prettier": "3.3.3",
         "typescript": "^5.5.3",
         "typescript-eslint": "^8.7.0",
         "vite": "^5.4.8"
