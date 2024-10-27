@@ -1,9 +1,9 @@
-import "./App.css";
+import "./CareerFairTable.css";
 import { useEffect, useMemo, useState } from "react";
 import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
 import { Box, Loader, Text } from "@mantine/core";
-import { getSeverityChips } from "./severity";
-import { Company, Severity, SeverityList } from "./types";
+import { getSeverityChips } from "src/severity";
+import { Company, Severity, SeverityList } from "src/types";
 
 type Cell = {
     values: { effectiveFormat: unknown; effectiveValue: unknown; formattedValue: string; userEnteredValue: unknown }[];
@@ -69,7 +69,7 @@ function Table({ data }: { data: Company[] }) {
     );
 }
 
-export default function App() {
+export function CareerFairTable() {
     const [companies, setCompanies] = useState<Company[] | undefined>(undefined);
     useEffect(() => {
         fetch(`${import.meta.env.VITE_BASE_URL}/data`)

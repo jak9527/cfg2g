@@ -11,6 +11,9 @@ import { routeTree } from "./routeTree.gen";
 
 const theme = createTheme({
     autoContrast: true,
+    colors: {
+        green: ["#E1F4E2", "#C3E9C5", "#A6DEA8", "#88D38A", "#6AC86D", "#4CBD50", "#3DA440", "#328634", "#225923", "#163B17"],
+    },
 });
 
 const router = createRouter({ routeTree });
