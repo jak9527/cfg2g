@@ -1,7 +1,7 @@
 import { Box, Group, Image, Title } from "@mantine/core";
 import { createFileRoute, ReactNode } from "@tanstack/react-router";
 
-function ImageFrame({ children }: ReactNode) {
+export function ImageFrame({ children }: ReactNode) {
     return (
         <Box w="auto" style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px", border: "0.25rem solid var(--mantine-color-green-0)" }}>
             {children}

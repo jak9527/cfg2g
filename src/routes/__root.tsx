@@ -32,7 +32,7 @@ function TopBar() {
                 display: "flex",
                 justifyContent: "space-between",
                 margin: ".5rem",
-                width: "calc(100vw - 2 * 8px)",
+                width: "calc(100vw - 4 * 8px)",
             }}
         >
             <Group>
